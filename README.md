@@ -17,6 +17,15 @@ pnpm test
 
 ## Using it with Regenic
 
-Regenic's built-in connector host only ships Feishu, DSH and Cursor. To run Slack, add this
-package to your own deployment's connector host and register `slackChannelDriver` alongside the
-built-in drivers.
+Regenic's built-in connector host only ships Feishu, DSH and Cursor. Load this package as an
+external plugin (its `package.json` already declares the `regenic.plugin` manifest):
+
+```sh
+pnpm install && pnpm build
+# either point at this package directly
+REGENIC_CHANNEL_PLUGIN=/path/to/regenic-connector-slack
+# or link/copy it into the plugin directory (default ~/.regenic/plugins)
+ln -s /path/to/regenic-connector-slack ~/.regenic/plugins/slack-connector
+```
+
+Set `REGENIC_SLACK_TOKEN` before starting Regenic, then install **Slack** from **Engine**.
