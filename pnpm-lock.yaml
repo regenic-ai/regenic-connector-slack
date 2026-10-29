@@ -1,0 +1,116 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@regenic/connector-contract':
+        specifier: ^0.1.0
+        version: 0.1.0
+      '@regenic/plugin-host':
+        specifier: ^0.1.0
+        version: 0.1.0
+    devDependencies:
+      '@regenic/connector-test-utils':
+        specifier: ^0.1.0
+        version: 0.1.0
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.5
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+packages:
+
+  '@regenic/connector-contract@0.1.0':
+    resolution: {integrity: sha512-9H4DJZpfyEnBDIy/QQS6XU0XJsWGsEtHqTCaaPq2MwONkq6JScn8pb0kXT5OGB0MPvT0UpxzS4ELtRagmBGo8w==}
+    engines: {node: '>=20'}
+
+  '@regenic/connector-test-utils@0.1.0':
+    resolution: {integrity: sha512-F4JQcFAyNq58LD04aoXdkgHIrQkAG3jHcZFBXGwyGMhE/0QzlEbEU2bsL2K2SKxADdZUeIBX4LHttZdR5vQGqg==}
+    engines: {node: '>=20'}
+
+  '@regenic/plugin-host@0.1.0':
+    resolution: {integrity: sha512-0vQSa36YyzRSBfnJATzXZYs3Wz+X9vtVjCPP1wW6a4kJ9rYgTY20RVxYYR/8cbGumeJb3PymIeWVoVHWi1dn5w==}
+    engines: {node: '>=20'}
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@types/node@22.20.5':
+    resolution: {integrity: sha512-U2+DNr+wSjpsTS/wZGYHq7GcwfuSmKiKvoPvK22zwTlRhU91yOniN4qRR5KhIjvif7ysw/dz/hKmfDH0Ris4aA==}
+
+  cordis@4.0.0-rc.8:
+    resolution: {integrity: sha512-vXaYK6XZJlIFTnODp4Rd973Qnd/gm3cwFzWsMTaeu6cQQheA7N+aA0GqHRNl0cFIrxMXWU8dst1ZXHlUQvfyRw==}
+    hasBin: true
+    peerDependencies:
+      '@cordisjs/plugin-include': ^1.0.4
+      '@cordisjs/plugin-loader': ^1.0.0-rc.5
+    peerDependenciesMeta:
+      '@cordisjs/plugin-include':
+        optional: true
+      '@cordisjs/plugin-loader':
+        optional: true
+
+  cosmokit@1.8.1:
+    resolution: {integrity: sha512-PDBv4l90xZKrUsZ0vtoycgZpO/j4iFsqJXrAxsyBDsnQRI7ZMJXIjgDJsKNjd5L8jnVnnlrDCdhkFbTncgCVjQ==}
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
+snapshots:
+
+  '@regenic/connector-contract@0.1.0':
+    dependencies:
+      '@regenic/plugin-host': 0.1.0
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - '@cordisjs/plugin-include'
+      - '@cordisjs/plugin-loader'
+
+  '@regenic/connector-test-utils@0.1.0':
+    dependencies:
+      '@regenic/connector-contract': 0.1.0
+      '@regenic/plugin-host': 0.1.0
+    transitivePeerDependencies:
+      - '@cordisjs/plugin-include'
+      - '@cordisjs/plugin-loader'
+
+  '@regenic/plugin-host@0.1.0':
+    dependencies:
+      cordis: 4.0.0-rc.8
+    transitivePeerDependencies:
+      - '@cordisjs/plugin-include'
+      - '@cordisjs/plugin-loader'
+
+  '@standard-schema/spec@1.1.0': {}
+
+  '@types/node@22.20.5':
+    dependencies:
+      undici-types: 6.21.0
+
+  cordis@4.0.0-rc.8:
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      cosmokit: 1.8.1
+
+  cosmokit@1.8.1: {}
+
+  typescript@5.9.3: {}
+
+  undici-types@6.21.0: {}
+
+  zod@3.25.76: {}

@@ -1,0 +1,48 @@
+{
+  "name": "@regenic/slack-connector",
+  "version": "0.1.0",
+  "private": true,
+  "regenic": {
+    "plugin": true,
+    "catalogOrder": 10,
+    "id": "@regenic/slack-connector",
+    "displayName": "Slack",
+    "engines": {
+      "regenic": "1.0"
+    },
+    "contributes": {
+      "drivers": [
+        "slackChannelDriver"
+      ]
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "pnpm run build && node --test test/*.test.cjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@regenic/plugin-host": "^0.1.0",
+    "@regenic/connector-contract": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "@regenic/connector-test-utils": "^0.1.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist"
+  ]
+}
