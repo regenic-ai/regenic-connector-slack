@@ -2,10 +2,10 @@ import { defineLocaleTables } from "@regenic/connector-contract";
 
 export const slackLocaleTables = defineLocaleTables({
   en: {
-    "catalog.title": "Slack",
+    "catalog.title": "Slack bot (read-only, recommended)",
     "catalog.channelLabel": "Slack",
     "catalog.description":
-      "Install one channel. It syncs after install and stays up to date while enabled.",
+      "Bot-token mode: install one read-only channel. This is not a user session bridge.",
     "catalog.credentialHint": "REGENIC_SLACK_TOKEN",
     "field.channelId": "Channel ID",
     "field.channelId.placeholder": "C01234567",
@@ -22,10 +22,10 @@ export const slackLocaleTables = defineLocaleTables({
     "setup.channelId.body": "Use a C… id. The channel name is optional display text.",
   },
   zh: {
-    "catalog.title": "Slack",
+    "catalog.title": "Slack bot（只读，推荐）",
     "catalog.channelLabel": "Slack",
     "catalog.description":
-      "按频道安装。安装后开始同步，启用期间保持最新。",
+      "Bot token 模式：按单频道安装，只读同步，不是用户会话桥接。",
     "catalog.credentialHint": "REGENIC_SLACK_TOKEN",
     "field.channelId": "频道 ID",
     "field.channelId.placeholder": "C01234567",
