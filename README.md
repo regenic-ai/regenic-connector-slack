@@ -1,8 +1,11 @@
 # regenic-connector-slack
 
-Independent, local-first Regenic plugin. No core changes, Matrix/homeserver, cloud
-relay, browser-cookie extraction, or telemetry. Node >=20, pnpm 9, macOS/Linux.
-Windows and network filesystems are not supported by the Unix-socket service.
+Connect Slack conversations to Regenic with a local-first plugin. Use the
+recommended official bot mode for read-only channel sync, or explicitly enable
+the user-session service for selected conversations and text replies.
+
+Requires Node >=20 and pnpm 9 on macOS/Linux. The local service uses a Unix socket;
+Windows and network filesystems are not supported.
 
 | Mode | Driver | Identity and capabilities |
 |---|---|---|
@@ -17,12 +20,12 @@ but is not a promise of zero account risk or platform approval for every use.
 Private browser sessions have additional protocol-maintenance and account risks;
 they are neither equally safe nor recommended. If an existing supported browser
 integration or another approved safer route meets your needs, prefer that route.
-**This Slack package does not provide a browser-plugin path** and does not invent one.
+This package provides bot and local user-session modes, not a browser integration.
 Opening Engine/probing never starts a user bridge, imports credentials, or migrates
 an existing bot installation.
 
-**This is a polling user-identity bridge, not a high-fidelity Beeper replacement.**
-It has no WebSocket/Events API transport. It does not implement reactions,
+**The user-session service syncs by polling.** It does not provide WebSocket or
+Events API delivery. It does not implement reactions,
 edits/deletions, media transfer, channel creation, read receipts, or automatic login
 refresh. A text caption may be imported without its attachment. Unsupported Slack
 message subtypes are excluded. There has been **no real-account integration test**.
@@ -34,7 +37,7 @@ pnpm install --frozen-lockfile
 pnpm build
 ```
 
-Regenic only bundles Feishu, DSH and Cursor. Load this package explicitly:
+Load the plugin by setting its path or linking it into Regenic's plugin directory:
 
 ```sh
 # Set before starting Regenic:
@@ -43,7 +46,7 @@ export REGENIC_CHANNEL_PLUGIN=/absolute/path/to/regenic-connector-slack
 ln -s /absolute/path/to/regenic-connector-slack ~/.regenic/plugins/slack-connector
 ```
 
-For the original bot connector, set `REGENIC_SLACK_TOKEN` before starting Regenic
+For bot mode, set `REGENIC_SLACK_TOKEN` before starting Regenic
 and install **Slack bot (read-only, recommended)** from Engine. This mode does not start or use
 the user-session service.
 
@@ -63,8 +66,7 @@ membership, retention, token type and API limits still apply. The adapter's repl
 capability indicates implemented functionality, not a guarantee of Slack permissions.
 
 The optional **`xoxc` + `d` (`xoxd`) cookie path is unverified with real Slack
-accounts**. It uses the same Web API calls, not reverse-engineered browser login
-endpoints. SDK-level tests verify that a percent-encoded `Cookie: d=...` header is
+accounts**. It uses the Slack Web API. SDK-level tests verify that a percent-encoded `Cookie: d=...` header is
 attached to *every* request, including auth/discovery/history/replies/send, and
 accept either raw or percent-encoded cookie input without double encoding.
 These tests establish transport behavior only: they do **not** establish that Slack
@@ -150,11 +152,11 @@ editing or removing an Engine installation stops its Regenic stream, **not** its
 already-selected local-service channel. Use `unselect` or stop the service to stop
 that local collection. Unselect removes that channel's journal/cursors; reselect
 starts a new backfill, and old Regenic cursors must not be reused.
-Stop with Ctrl-C or SIGTERM. Nothing installs a daemon or deploys a service.
+Stop the foreground service with Ctrl-C or SIGTERM.
 
 ## Sync, recovery and outbound guarantees
 
-The service uses real Slack Web API methods: `auth.test`, `users.conversations`,
+The service uses Slack Web API methods: `auth.test`, `users.conversations`,
 `conversations.history`, `conversations.replies`, and `chat.postMessage`. Each
 15-second cycle visits one selected channel, requesting one history page and one
 thread page rather than downloading a whole workspace in one blocking call.
@@ -185,7 +187,6 @@ rotation. Before that root is discovered, replies can be delayed; retention or
 inaccessible roots cannot be recovered. With N roots, idle-thread revisit latency
 is approximately N visits to that channel (multiplied by the number of selected
 channels in service cycles), and can be worse under rate limits or pagination.
-This intentionally favors correctness/explicit coverage over a false realtime claim.
 
 Plain-text egress requires the host's stable `idempotency_key`. A deterministic
 `client_msg_id` and payload fingerprint are reserved on disk **before** sending;
@@ -202,13 +203,13 @@ and requires manual verification; this is not an exactly-once guarantee from Sla
 Do not delete transaction state or invent a new operation key just to retry an
 unknown outcome. `status` reports the number of pending sends.
 
-**Current Regenic host boundary:** the verified core's ordinary reply path supplies
+**Regenic integration limits:** the ordinary reply path supplies
 `client_request_id` as the idempotency key. Some legacy forwarding/work send paths
 omit a stable key; this driver intentionally rejects those instead of inventing one.
 The adapter/RPC can route Slack threads when `SendIntent.target.external_id`/`root`
-is explicitly supplied. The verified core's quote/reply path currently passes only
+is explicitly supplied. Regenic's quote/reply path currently passes only
 `scope_id`, so quoting a message in that UI sends channel-level text, **not** a
-native Slack thread reply. This plugin does not change the core to add that routing.
+native Slack thread reply.
 
 ## Local data and diagnostics
 
@@ -254,27 +255,18 @@ pnpm test
 REGENIC_ROOT=/absolute/path/to/built/regenic pnpm test
 ```
 
-Tests use the real installed Slack WebClient with an injected fetch transport,
+Tests use the installed Slack WebClient with an injected fetch transport,
 synthetic Slack response fixtures, a real private Unix-socket HTTP server, and the
-real Regenic plugin host/connector registry/conformance/schema helpers. The
+Regenic plugin host/connector registry/conformance/schema helpers. The
 optional `REGENIC_ROOT` selects that core's built conformance/schema helpers;
 normal TypeScript compilation still targets the declared published SDK dependencies.
 No tests load local credentials, contact Slack, read a real user's messages or
 send a real message. Fixture testing cannot establish workspace/session acceptance,
 real API quotas or retention completeness.
 
-## Sources and licenses
+## License and dependencies
 
 This repository is MIT-licensed. Runtime protocol library:
 [`@slack/web-api` **8.2.0**](https://github.com/slackapi/node-slack-sdk/tree/main/packages/web-api)
 (MIT, fixed in package manifest/lockfile); its notice is in `THIRD_PARTY_NOTICES`.
 Transitive dependencies retain their own distributed notices.
-
-Design references only:
-[Beeper bridge-manager](https://github.com/beeper/bridge-manager),
-[`mautrix/slack` at 8a06d2da08a16053d5b0ad0ba935cc823cfc3d07](https://github.com/mautrix/slack/tree/8a06d2da08a16053d5b0ad0ba935cc823cfc3d07)
-(AGPL-3.0; **no application code copied**), and
-[`beeper/slackgo` at 4b61f4fcd5e0aef337cd9d3a3e1f03aece47478e](https://github.com/beeper/slackgo/tree/4b61f4fcd5e0aef337cd9d3a3e1f03aece47478e)
-(BSD-2-Clause; evaluated cookie/history/replies/RTM APIs, **not vendored or linked**).
-The latter requires a Go 1.25+/1.26 toolchain; this version keeps a single Node
-runtime instead. No Matrix code, homeserver, or WhatsApp implementation is included.
