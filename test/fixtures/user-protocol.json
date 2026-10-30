@@ -1,0 +1,45 @@
+{
+  "identity": { "ok": true, "team_id": "TLOCAL", "user_id": "USELF", "user": "local-user" },
+  "directory": {
+    "ok": true,
+    "channels": [
+      { "id": "CONE", "name": "engineering", "is_member": true },
+      { "id": "DONE", "user": "UPEER", "is_im": true }
+    ],
+    "response_metadata": { "next_cursor": "" }
+  },
+  "recent": {
+    "ok": true,
+    "messages": [
+      { "ts": "1700000200.000002", "user": "UPEER", "text": "recent root" },
+      { "ts": "1700000100.000001", "user": "USELF", "text": "own message" }
+    ],
+    "has_more": true,
+    "response_metadata": { "next_cursor": "older-page" }
+  },
+  "older": {
+    "ok": true,
+    "messages": [
+      { "ts": "1700000100.000001", "user": "USELF", "text": "own message" },
+      { "ts": "1700000000.000001", "user": "UPEER", "text": "old root without thread_ts" }
+    ],
+    "has_more": false
+  },
+  "live": {
+    "ok": true,
+    "messages": [
+      { "ts": "1700000300.000001", "user": "UPEER", "text": "arrived while offline" }
+    ],
+    "has_more": false
+  },
+  "lateReply": {
+    "ok": true,
+    "messages": [
+      { "ts": "1700000000.000001", "user": "UPEER", "text": "old root without thread_ts" },
+      { "ts": "1700000400.000001", "user": "UPEER", "text": "late reply to old root", "thread_ts": "1700000000.000001" }
+    ],
+    "has_more": false
+  },
+  "empty": { "ok": true, "messages": [], "has_more": false },
+  "receipt": { "ok": true, "ts": "1700000500.000001", "channel": "CONE" }
+}

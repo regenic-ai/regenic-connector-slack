@@ -12,7 +12,8 @@
     },
     "contributes": {
       "drivers": [
-        "slackChannelDriver"
+        "slackChannelDriver",
+        "slackUserDriver"
       ]
     }
   },
@@ -27,11 +28,13 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "pnpm run build && node --test test/*.test.cjs",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "bridge": "node dist/user-cli.js"
   },
   "dependencies": {
     "@regenic/plugin-host": "^0.1.0",
-    "@regenic/connector-contract": "^0.1.0"
+    "@regenic/connector-contract": "^0.1.0",
+    "@slack/web-api": "8.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
@@ -43,6 +46,7 @@
     "node": ">=20"
   },
   "files": [
-    "dist"
+    "dist",
+    "THIRD_PARTY_NOTICES"
   ]
 }
