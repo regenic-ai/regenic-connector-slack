@@ -33,13 +33,18 @@
   },
   "dependencies": {
     "@regenic/plugin-host": "^0.1.0",
-    "@regenic/connector-contract": "^0.1.0",
+    "@regenic/connector-contract": "^0.2.0",
     "@slack/web-api": "8.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "typescript": "^5.7.2",
     "@regenic/connector-test-utils": "^0.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@regenic/connector-test-utils@0.1.0>@regenic/connector-contract": "0.2.0"
+    }
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {
